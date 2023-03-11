@@ -3,50 +3,35 @@ import { randomUUID } from 'crypto';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
+import { ProjectRepository } from './project.repository';
 
 @Injectable()
 export class ProjectService {
-  private projects: Project[] = [];
+  constructor(private readonly projectRepository: ProjectRepository) {}
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
-    const createProject = {
+    const newProject = {
       ...createProjectDto,
       id: randomUUID(),
     };
-    this.projects.push(createProject);
+    const createProject = await this.projectRepository.createProject(newProject);
     return createProject;
   }
 
   async findAll(): Promise<Project[]> {
-    return this.projects;
+    return await this.projectRepository.findAllProjects();
   }
 
-  async findOne(projectId: string): Promise<Project> {
-    const findById = this.projects.find((project) => project.id === projectId);
-    return findById;
+  async findOne(id: string): Promise<Project> {
+    return await this.projectRepository.findProjectById(id);
   }
 
   async update(updateProjectDto: UpdateProjectDto): Promise<Project>  {
-    this.projects.map((project, index) => {
-      if (project.id === updateProjectDto.id) {
-        const UpdateProject = Object.assign(project, updateProjectDto);
-        this.projects.splice(index, 1, UpdateProject);
-      }
-    });
-    const UpdateProject = this.projects.find((project) => project.id === updateProjectDto.id);
-    return UpdateProject;
+    return await this.projectRepository.updateProject(updateProjectDto);
   }
 
-  async remove(projectId: string): Promise<boolean> {
-    const existProject = this.projects.find((project) => project.id === projectId);
-    if (!existProject) {
-      return false;
-    }
-    this.projects.map((project, index) => {
-      if (project.id === projectId) {
-        this.projects.splice(index, 1);
-      }
-    });
-    return true;
+  async remove(id: string): Promise<string> {
+    await this.projectRepository.deleteProject(id);
+    return 'Projeto excluido com sucesso';
   }
 }
