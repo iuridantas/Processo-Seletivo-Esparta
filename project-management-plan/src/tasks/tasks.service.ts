@@ -3,54 +3,40 @@ import { randomUUID } from 'crypto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
+import { TaskRepository } from './tasks.repository';
 
 
 @Injectable()
 export class TasksService {
-  private task: Task[] = [];
+  constructor(private readonly taskRepository: TaskRepository) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const createTask = {
+    const newTask = {
       ...createTaskDto,
       id: randomUUID(),
     };
-    this.task.push(createTask);
+    const createTask = await this.taskRepository.createTask(newTask);
     return createTask;
   }
 
   async findAll(): Promise<Task[]> {
-    return this.task;
+    return await this.taskRepository.findAllTasks();
   }
 
   async findAllByProject(projectId: string): Promise<Task[]> {
-    return this.task.filter(task => task.projectId === projectId);
+    return await this.taskRepository.findAllTaskByProject(projectId);
   }
 
-  async findOne(taskId: string): Promise<Task> {
-    const findById = this.task.find((task) => task.id === taskId);
-    return findById;
+  async findOne(id: string): Promise<Task> {
+    return await this.taskRepository.findTaskById(id);
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task>  {
-    this.task.map((task, index) => {
-      if (task.id === id) {
-        const updatedTrainig = Object.assign(task, updateTaskDto);
-        this.task.splice(index, 1, updatedTrainig);
-      }
-    });
-    return await this.findOne(id);
+  async update(updateTaskDto: UpdateTaskDto): Promise<Task>  {
+    return await this.taskRepository.updateTask(updateTaskDto);
   }
 
-  async remove(taskId: string): Promise<boolean> {
-    const existTask = this.task.find((task) => task.id === taskId);
-    if (!existTask) {
-      return false;
-    }
-    this.task.map((project, index) => {
-      if (project.id === taskId) {
-        this.task.splice(index, 1);
-      }
-    });
-    return true;
+  async remove(id: string): Promise<string> {
+    await this.taskRepository.deleteTask(id);
+    return 'tarefa excluido com sucesso';
   }
 }

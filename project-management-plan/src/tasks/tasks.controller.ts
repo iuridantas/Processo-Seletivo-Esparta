@@ -43,9 +43,9 @@ export class TasksController  {
   }
 
   @Patch('/update/:id')
-  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  async update(@Body() updateTaskDto: UpdateTaskDto) {
     try{ 
-    return await this.taskService.update(id, updateTaskDto);
+    return await this.taskService.update(updateTaskDto);
   } catch(err){
     HandleException(err);
   }
