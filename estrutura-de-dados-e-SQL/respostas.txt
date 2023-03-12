@@ -1,0 +1,21 @@
+Escrever a consulta SQL para recuperar as seguintes informações:
+
+1 - Buscar os nomes de todos os alunos que frequentam alguma turma do professor 'JOAO PEDRO'.
+
+resposta: Juntaria as tabelas de aluno, turma e professor, selecionava as colunas aluno_id, turma_id e professor_id e filtrava os resultados para incluir somente os alunos que frequentam turmas do professor 'JOAO PEDRO'.
+
+2 - Buscar os dias da semana que tenham aulas da disciplina 'MATEMATICA'.
+
+resposta: Juntaria as tabelas de turma e disciplina, selecionava as colunas disciplina_id e dia_da_semana e filtrava os resultados para incluir somente as turmas que correspondem à disciplina 'MATEMATICA'.
+
+3 - Buscar todos os alunos que frequentem aulas de 'MATEMATICA' e também 'FISICA'.
+
+resposta: Juntaria as tabelas de aluno, turma e disciplina, selecionava as colunas aluno_id, turma_id e disciplina_id e filtrava os resultados para incluir somente os alunos que frequentam as aulas de 'MATEMATICA' e também 'FISICA'.
+
+4 - Buscar as disciplinas que não tenham nenhuma turma.
+
+resposta: Juntaria as tabelas de turma e disciplina, selecionava a coluna disciplina_id e filtrava os resultados para incluir somente disciplinas que não possuem uma correspondência.
+
+5 - Buscar os alunos que frequentem aulas de 'MATEMATICA' exceto os que frequentem 'QUIMICA'.
+
+resposta: Juntaria as tabelas de aluno, turma e disciplina, selecionava as colunas turma_id, disciplina_id e aluno_id e filtrava os resultados para incluir os alunos que frequentem aulas de disciplina 'MATEMATICA' e não frequentam a disciplina de 'QUIMICA'.
