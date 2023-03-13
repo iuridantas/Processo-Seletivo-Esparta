@@ -25,16 +25,25 @@ como utilizar a API:
 No profile tem 5 rotas: 
 
 /project/create - onde cria um novo projeto;
+
 /project - onde lista todos os projetos criados;
+
 /project/find/{id} - onde lista um unico projeto;
+
 /project/update - onde editar um projeto;
+
 /project/delete/{id} - onde deleta um projeto, assim como todas as suas tarefas.
 
 No task tem 6 rotas:
 
 /task/create - onde cria uma nova tarefa a um projeto;
+
 /task - onde lista todas as tarefas criadas;
+
 /task/{projectId}/tasks - onde lista tarefas de um projeto
+
 /task/find/{id} - onde lista uma unica tarefa;
+
 /task/update - onde edita uma tarefa;
+
 /task/delete/{id} - onde deleta uma tarefa.
