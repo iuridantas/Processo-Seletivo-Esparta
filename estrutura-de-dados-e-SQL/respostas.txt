@@ -1,21 +1,126 @@
-Escrever a consulta SQL para recuperar as seguintes informações:
+create database Esparta;
+
+create table if not exists aluno (
+	id_aluno int not null auto_increment primary key,
+    Nome varchar(45) not null
+);
+
+create table if not exists aluno_turma (
+	aluno_id int not null,
+    turma_id int not null
+);
+
+ create table if not exists professor (
+	id_professor int not null auto_increment primary key,
+    Nome varchar(45) not null
+);
+
+create table if not exists disciplina (
+	id_disciplina int not null auto_increment primary key,
+    Nome varchar(45) not null
+);
+
+create table if not exists turma (
+	id_turma int not null auto_increment primary key,
+    dia_da_semana varchar(16) ,
+    horario time ,
+    disciplina_id int ,
+    professor_id int
+);
+
+alter table aluno_turma
+add foreign key (aluno_id)
+references aluno(id_aluno);
+
+alter table aluno_turma
+add foreign key (turma_id)
+references turma(id_turma);
+
+alter table turma
+add foreign key (disciplina_id)
+references disciplina(id_disciplina);
+
+alter table turma
+add foreign key (professor_id)
+references professor(id_professor);
+
+insert into aluno (Nome) values ('Iuri');
+insert into aluno (Nome) values ('João');
+insert into aluno (Nome) values ('Pedro');
+insert into aluno (Nome) values ('Maria');
+
+insert into professor (Nome) values ('Joao Pedro');
+insert into professor (Nome) values ('Carlos');
+insert into professor (Nome) values ('Marian');
+insert into professor (Nome) values ('Joao Vitor');
+
+insert into disciplina (Nome) values ('Matemática');
+insert into disciplina (Nome) values ('Física');
+insert into disciplina (Nome) values ('Químicaa');
+insert into disciplina (Nome) values ('portugues');
+
+insert into turma (dia_da_semana, horario, disciplina_id, professor_id) values ('Segunda', '09:00', 1, 1);
+insert into turma (dia_da_semana, horario, disciplina_id, professor_id) values ('Segunda', '10:00', 2, 3);
+insert into turma (dia_da_semana, horario, disciplina_id, professor_id) values ('Segunda', '11:00', 3, 2);
+insert into turma (dia_da_semana, horario, disciplina_id, professor_id) values ('quarta', '09:00', 1, 1);
+
+insert into aluno_turma (aluno_id, turma_id) values (1, 1);
+insert into aluno_turma (aluno_id, turma_id) values (2, 1);
+insert into aluno_turma (aluno_id, turma_id) values (3, 1);
+insert into aluno_turma (aluno_id, turma_id) values (4, 1);
+insert into aluno_turma (aluno_id, turma_id) values (1, 4);
+insert into aluno_turma (aluno_id, turma_id) values (2, 4);
+insert into aluno_turma (aluno_id, turma_id) values (3, 4);
+insert into aluno_turma (aluno_id, turma_id) values (4, 4);
+insert into aluno_turma (aluno_id, turma_id) values (1, 2);
+insert into aluno_turma (aluno_id, turma_id) values (3, 2);
+insert into aluno_turma (aluno_id, turma_id) values (2, 3);
+INSERT INTO aluno_turma (aluno_id, turma_id) values (4, 3);
 
 1 - Buscar os nomes de todos os alunos que frequentam alguma turma do professor 'JOAO PEDRO'.
 
-resposta: Juntaria as tabelas de aluno, turma e professor, selecionava as colunas aluno_id, turma_id e professor_id e filtrava os resultados para incluir somente os alunos que frequentam turmas do professor 'JOAO PEDRO'.
+select aluno.Nome
+from aluno
+inner join aluno_turma on aluno_turma.aluno_id = aluno.id_aluno
+inner join turma on turma.id_turma = aluno_turma.turma_id
+inner join professor on professor.id_professor = turma.professor_id
+where professor.Nome = 'João Pedro';
 
 2 - Buscar os dias da semana que tenham aulas da disciplina 'MATEMATICA'.
 
-resposta: Juntaria as tabelas de turma e disciplina, selecionava as colunas disciplina_id e dia_da_semana e filtrava os resultados para incluir somente as turmas que correspondem à disciplina 'MATEMATICA'.
+select turma.dia_da_semana
+from turma
+inner join disciplina on disciplina.id_disciplina = turma.disciplina_id
+where disciplina.Nome = 'Matemática';
 
 3 - Buscar todos os alunos que frequentem aulas de 'MATEMATICA' e também 'FISICA'.
 
-resposta: Juntaria as tabelas de aluno, turma e disciplina, selecionava as colunas aluno_id, turma_id e disciplina_id e filtrava os resultados para incluir somente os alunos que frequentam as aulas de 'MATEMATICA' e também 'FISICA'.
+select aluno.Nome
+from aluno
+inner join aluno_turma on aluno_turma.aluno_id = aluno.id_aluno
+inner join turma on turma.id_turma = aluno_turma.turma_id
+inner join disciplina on disciplina.id_disciplina = turma.disciplina_id
+where disciplina.Nome in ('Matemática', 'Física');
 
 4 - Buscar as disciplinas que não tenham nenhuma turma.
 
-resposta: Juntaria as tabelas de turma e disciplina, selecionava a coluna disciplina_id e filtrava os resultados para incluir somente disciplinas que não possuem uma correspondência.
+select disciplina.Nome
+from disciplina
+left join turma on disciplina.id_disciplina = turma.disciplina_id
+where turma.id_turma is null;
 
 5 - Buscar os alunos que frequentem aulas de 'MATEMATICA' exceto os que frequentem 'QUIMICA'.
 
-resposta: Juntaria as tabelas de aluno, turma e disciplina, selecionava as colunas turma_id, disciplina_id e aluno_id e filtrava os resultados para incluir os alunos que frequentem aulas de disciplina 'MATEMATICA' e não frequentam a disciplina de 'QUIMICA'.
+select aluno.Nome
+from aluno
+inner join aluno_turma on aluno_turma.aluno_id = aluno.id_aluno
+inner join turma on turma.id_turma = aluno_turma.turma_id
+inner join disciplina on disciplina.id_disciplina = turma.disciplina_id
+where disciplina.Nome = 'Matemática' and aluno.id_aluno not in(
+select aluno.id_aluno
+from aluno
+inner join aluno_turma on aluno_turma.aluno_id = aluno.id_aluno
+inner join turma on turma.id_turma = aluno_turma.turma_id
+inner join disciplina on disciplina.id_disciplina = turma.disciplina_id
+where disciplina.Nome = 'Química'
+);
