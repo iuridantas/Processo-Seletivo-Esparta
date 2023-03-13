@@ -7,7 +7,9 @@ instruções de como executar a aplicação:
 3 - Instale as dependências do projeto executando o comando npm install no terminal.
 
 4 - Crie um arquivo chamado .env na raiz do projeto e adicione a seguinte variável de ambiente:
+
       DATABASE_URL="postgresql://admin:admin@localhost:5433/projectManagementPlan"
+      
       SECRET_KEY="<escolha o nome>"
       
 5 - Execute o comando docker-compose up no terminal para construir as imagens e iniciar os containers.
