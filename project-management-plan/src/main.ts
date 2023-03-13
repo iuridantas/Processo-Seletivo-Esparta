@@ -9,11 +9,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-  .setTitle('Project Management Plan')
-  .setVersion('1.0')
-  .addBearerAuth()
-  .build();
-  
+    .setTitle('Project Management Plan')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api/docs', app, document);
