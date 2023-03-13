@@ -8,7 +8,7 @@ instruções de como executar a aplicação:
 
 4 - Crie um arquivo chamado .env na raiz do projeto e adicione a seguinte variável de ambiente:
 
-      DATABASE_URL="postgresql://admin:admin@localhost:5433/projectManagementPlan"
+      DATABASE_URL="postgresql://..."
       
       SECRET_KEY="<escolha o nome>"
       
